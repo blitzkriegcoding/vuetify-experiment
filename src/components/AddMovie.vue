@@ -4,9 +4,10 @@
     </v-text-field>
     <v-textarea name="input-7-1" label="Movie Description" v-model="description"
     multi-line></v-textarea>
-    <v-select label="Movie release year" v-model="release_year" :items="years">
+    <v-select label="Movie release year" v-model="release_year"
+    :items="years" required :rules="releaseRules">
     </v-select>
-    <v-text-field label="Movie Genre" v-model="genre"></v-text-field>
+    <v-text-field label="Movie Genre" v-model="genre" required :rules="genreRules"></v-text-field>
     <v-btn @click="submit" :disabled="!valid">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
   </v-form>
@@ -23,6 +24,13 @@ export default {
     release_year: '',
     nameRules: [
       v => !!v || 'Movie name is required',
+    ],
+    releaseRules: [
+      v => !!v || 'Movie release year is required',
+    ],
+    genreRules: [
+      v => !!v || 'Movie genre year is required',
+      v => (v && v.length <= 80) || 'Genre must be less than equal to 80 characters.',
     ],
     select: null,
     years: [
@@ -49,10 +57,19 @@ export default {
             genre: this.genre,
           },
         }).then(() => {
+          this.$swal(
+            'Great!',
+            'Movie added successfully',
+            'success',
+          );
           this.$router.push({ name: 'Home' });
           this.$refs.form.reset();
         }).catch(() => {
-
+          this.$swal(
+            'Oh oo!',
+            'Could not add the movie',
+            'error',
+          );
         });
       }
       return true;

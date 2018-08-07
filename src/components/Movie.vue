@@ -1,13 +1,11 @@
 <template>
   <v-layout row wrap>
-   <v-flex xs4 v-for="movie in movies" :key="movie._id">
+   <v-flex xs4>
      <v-card>
        <v-card-title primary-title>
          <div>
-           <div class="headline">
-              <v-btn flat v-bind:to="`/movies/${movie._id}`">
-                {{ movie.name }}
-              </v-btn>
+            <div class="headline">
+              {{ movie.name }}
             </div>
            <span class="grey--text">{{ movie.release_year }} · {{ movie.genre }}</span>
          </div>
@@ -25,31 +23,30 @@
    </v-flex>
   </v-layout>
 </template>
-
 <script>
 import axios from 'axios';
 
 export default {
-  name: 'Hello',
+  name: 'Movie',
   data() {
     return {
-      movies: [],
+      movie: [],
     };
   },
   mounted() {
-    this.fetchMovies();
+    this.fetchMovie();
   },
   methods: {
-    async fetchMovies() {
+    async fetchMovie() {
       return axios({
         method: 'get',
-        url: 'http://localhost:8081/movies',
+        url: `http://localhost:8081/api/movies/${this.$route.params.id}`,
       }).then((response) => {
-        this.movies = response.data.movies;
+        this.movie = response.data;
       }).catch(() => {
+
       });
     },
   },
 };
 </script>
-
