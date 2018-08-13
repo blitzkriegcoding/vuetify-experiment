@@ -46,7 +46,7 @@ export default {
         return axios({
           method: 'post',
           // credentials: false,
-          url: 'http://localhost:8081/movies/',
+          url: '/movies',
           headers: {
             'Content-Type': 'application/json',
           },
