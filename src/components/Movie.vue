@@ -90,11 +90,17 @@ export default {
       });
     },
     async fetchMovie() {
+      const token = window.localStorage.getItem('auth');
       return axios({
         method: 'get',
         url: `http://localhost:8081/api/movies/${this.$route.params.id}`,
+        headers: {
+          Authorization: `JWT ${token}`,
+          'Content-Type': 'application/json',
+        },
       }).then((response) => {
         this.movie = response.data;
+        this.current_user = response.data.current_user;
       }).catch(() => {
 
       });
